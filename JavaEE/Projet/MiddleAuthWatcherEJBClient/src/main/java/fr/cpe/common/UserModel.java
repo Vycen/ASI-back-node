@@ -1,17 +1,22 @@
 package fr.cpe.common;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
+import javax.validation.constraints.NotNull;
+
+import static javax.persistence.GenerationType.*;
 
 @Entity
-@Table(name = "user")
+@Table(name = "users")
+@NamedQuery(name = "Users.all", query = "select u from UserModel u")
 public class UserModel implements Serializable {
 
     @Id
-    @Column(name = "login", nullable = false, unique = true)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private int id;
+
+    @Column(name = "login", unique = true, nullable = false)
     private String login;
 
     @Column(name = "pwd", nullable = false)
@@ -24,12 +29,31 @@ public class UserModel implements Serializable {
     private String surName;
 
     @Column(name = "role", nullable = false)
-    private String role;
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
+    public UserModel() {
+    }
 
     public UserModel(String login, String pwd) {
         this.login = login;
         this.pwd = pwd;
-        this.role = "";
+        this.role = Role.NONE;
+    }
+
+    public UserModel(String pwd, String lastName, String surName, Role role) {
+        this.pwd = pwd;
+        this.lastName = lastName;
+        this.surName = surName;
+        this.role = role;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getLogin() {
@@ -64,11 +88,11 @@ public class UserModel implements Serializable {
         this.surName = surName;
     }
 
-    public String getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 
