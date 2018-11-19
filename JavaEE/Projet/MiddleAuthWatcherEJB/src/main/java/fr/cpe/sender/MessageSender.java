@@ -12,7 +12,6 @@ import fr.cpe.common.UserModel;
 
 
 @Stateless
-@LocalBean
 public class MessageSender implements MessageSenderLocal {
 
     @Inject

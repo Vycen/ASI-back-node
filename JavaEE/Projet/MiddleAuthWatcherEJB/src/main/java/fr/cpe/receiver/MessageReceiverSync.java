@@ -10,7 +10,6 @@ import javax.jms.*;
 import fr.cpe.common.UserModel;
 
 @Stateless
-@LocalBean
 public class MessageReceiverSync implements MessageReceiverSyncLocal {
 
 
@@ -24,7 +23,17 @@ public class MessageReceiverSync implements MessageReceiverSyncLocal {
 
         Message message = context.createConsumer(queue).receive(1000);
 
-        return (UserModel)message;
+        UserModel user = null;
+        try {
+            if(message instanceof ObjectMessage) {
+                ObjectMessage msg = (ObjectMessage) message;
+                user = (UserModel)msg.getObject();
+            }
+        } catch (JMSException e) {
+            e.printStackTrace();
+        }
+
+        return user;
 
     }
 
