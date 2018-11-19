@@ -11,11 +11,14 @@ const CONFIG = JSON.parse(process.env.CONFIG);
 router.route('/loadPres')
   .get((request, response) => {
     fs.readdir(CONFIG.presentationDirectory, (err, list) => {
-      let result = {};
-      let count = list.length;
-      list.forEach((file) => {
-        count--;
-        if(path.extname(file) === '.json') {
+        let result = {};
+        let listFichier = [];
+        list.forEach((file) => {
+            if(path.extname(file) === '.json') {
+                listFichier.push(file);
+            }
+        });
+        listFichier.forEach((file) => {
           fs.readFile(CONFIG.presentationDirectory + '/' + file, (err, data) => {
             if(err) {
               response.json(err);
@@ -24,12 +27,11 @@ router.route('/loadPres')
               let json = JSON.parse(data.toString());
               result[json.id] = json;
             }
-            if(count === 0) {
+            if(listFichier.length === Object.keys(result).length) {
+              //console.log(result);
               response.json(result);
             }
           });
-
-        }
       });
     });
   });

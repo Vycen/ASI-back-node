@@ -1,5 +1,5 @@
 {
   "port": 1337,
-  "contentDirectory": "/Users/Emile_Bex/Cours/ASI/back-node/NodeJS/tp_starter/content",
-  "presentationDirectory": "/Users/Emile_Bex/Cours/ASI/back-node/NodeJS/tp_starter/presentation"
+  "contentDirectory": "/home/cpe/Documents/tp_nodejs/ASI-back-node/NodeJS/tp_starter/content",
+  "presentationDirectory": "/home/cpe/Documents/tp_nodejs/ASI-back-node/NodeJS/tp_starter/app/presentation"
 }

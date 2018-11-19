@@ -1,79 +1,78 @@
+'use strict';
 const fs = require('fs');
+const util = require('../utils/utils');
 
 const CONFIG = JSON.parse(process.env.CONFIG);
 
 class ContentModel {
 
-  constructor(content) {
-    if(content) {
-      this.type = content.type;
-      this.id = content.id;
-      this.title = content.title;
-      this.src = content.src;
-      this.fileName = content.fileName;
+  constructor({type,id,title,src,fileName}={}) {
+    let  data;
+    this.type = type;
+    this.id = id;
+    this.title = title;
+    this.src = src;
+    this.fileName = fileName;
+    this.getData=function() {
+        return data;
+    }
+    this.setData=function(value) {
+        data = value;
     }
   }
 
-  getData() {
-    return this.data;
-  }
-
-  setData(value) {
-    this.data = value;
-  }
 
   static create(content, callback) {
-    if(content instanceof ContentModel) {
-      if(content.id) {
-        fs.writeFile(CONFIG.contentDirectory + '/' + content.id + ".meta.json", JSON.stringify(content), (err) => {
-          if(err) {
-            callback(err);
-          }
-          else {
-            if(content.type === 'img') {
-              fs.writeFile(CONFIG.contentDirectory + '/' + content.fileName, content.getData(), (err) => {
-                if (err) {
-                  callback(err);
-                }
-                else {
-                  callback();
-                }
-              });
-            }
-            else {
-              callback();
-            }
-          }
-        });
-      }
-      else {
-        callback(new Error("ID is null"));
-      }
-    }
-    else {
-      callback(new Error("Not a ContentModel"));
+    if(!(content instanceof ContentModel)) {
+      return callback(new Error("Not a ContentModel"));
     }
 
+    if(!content.id) {
+       return callback(new Error("ID is null"));
+    }
+
+    fs.writeFile(CONFIG.contentDirectory + '/' + content.id + ".meta.json", JSON.stringify(content), (err) => {
+      if(err) {
+        return callback(err);
+      }
+      if(content.type !== 'img') {
+
+          return callback(null,content);
+      }
+      fs.writeFile(CONFIG.contentDirectory + '/' + content.fileName, content.getData(), (err) => {
+        if (err) {
+          return callback(err);
+        }
+        else {
+          return callback(null,content);
+        }
+      });
+    });
   }
 
   static read(id, callback) {
-    fs.readFile(CONFIG.contentDirectory + '/' + id + ".meta.json", (err, data) => {
+
+    fs.readFile(util.getMetaFilePath(id) , (err, data) => {
+
       if(err) {
-        callback(err, null);
+          return callback(err, null);
       }
       else {
         let json = JSON.parse(data.toString());
         let content = new ContentModel(json);
-        fs.readFile(CONFIG.contentDirectory + '/' + content.fileName, (err, data) => {
-          if (err) {
-            callback(err, null);
-          }
-          else {
-            content.setData(data.toString());
-            callback(null, content);
-          }
-        });
-
+        if(content.fileName !== null) {
+            fs.readFile(CONFIG.contentDirectory + '/' + content.fileName, (err, data) => {
+                if (err) {
+                    return callback(err, null);
+                }
+                else {
+                    content.setData(data.toString());
+                    return callback(null, content);
+                }
+            });
+        }else{
+            return callback(null, content);
+        }
       }
     });
   }
