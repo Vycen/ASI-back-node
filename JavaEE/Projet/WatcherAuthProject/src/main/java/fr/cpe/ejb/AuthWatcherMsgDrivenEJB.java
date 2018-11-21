@@ -29,16 +29,6 @@ public class AuthWatcherMsgDrivenEJB implements MessageListener {
     @Inject
     MessageSenderQueueLocal sender;
 
-    public AuthWatcherMsgDrivenEJB() {
-        super();
-        System.out.println("CONSTRUCTED");
-    }
-
-    @PostConstruct
-    public void test() {
-        System.out.println("POST CONSTRUCT");
-    }
-
     public void onMessage(Message message) {
         try {
             if (message instanceof TextMessage) {

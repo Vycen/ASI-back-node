@@ -24,6 +24,7 @@ public class MessageReceiverSync implements MessageReceiverSyncLocal {
         Message message = context.createConsumer(queue).receive(1000);
 
         UserModel user = null;
+
         try {
             if(message instanceof ObjectMessage) {
                 ObjectMessage msg = (ObjectMessage) message;
