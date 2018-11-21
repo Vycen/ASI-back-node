@@ -1,0 +1,32 @@
+
+.image {
+    object-fit: contain;
+    height: 150px;
+    margin-top: 20px;
+}
+
+.frame {
+    margin-top: 20px;
+}
+
+.contentTitle {
+    color: gray;
+    text-align: left;
+    font-weight: bold;
+}
+
+.contentSubtitle {
+    color: gray;
+    text-align: left;
+    font-size: small;
+}
+
+.contentContainer {
+    display: flex;
+    flex-direction: column;
+    padding: 0 10px 10px 10px;
+    border: solid lightgray 1px;
+    border-radius: 5px;
+    margin-bottom: 5px;
+    overflow-y: scroll;
+}
