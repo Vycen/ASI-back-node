@@ -22,10 +22,10 @@ class VisualComponent extends Component {
 
     const {data} = this.props;
 
-    if(data.type === 'img' || data.type === 'img_url') {
+    if(data && (data.type === 'img' || data.type === 'img_url')) {
       return this.renderImage();
     }
-    else if(data.type === 'video' || data.type === 'web') {
+    else if(data && (data.type === 'video' || data.type === 'web')) {
       return this.renderFrame()
     }
 

@@ -2,23 +2,36 @@ import React, {Component} from 'react';
 import './editMetaSlid.css'
 
 export default class EditMetaSlid extends Component {
-  constructor(props) {
-    super(props);
+
+  handleChangeTitle(title) {
+    const {updateCurrentSlide, slide} = this.props;
+    updateCurrentSlide({
+      ...slide,
+      title: title.target.value
+    })
+  }
+
+  handleChangeTxt(txt) {
+    const {updateCurrentSlide, slide} = this.props;
+    updateCurrentSlide({
+      ...slide,
+      txt: txt.target.value
+    })
   }
 
   render() {
 
-    const {title, txt, handleChangeTitle, handleChangeTxt} = this.props;
+    const {slide} = this.props;
 
     return (
       <div className="form-group">
-        <label htmlFor="currentSlideTitle">Title </label>
+        <label htmlFor="currentSlideTitle">Title</label>
         <input
           type="text"
           className="form-control"
           id="currentSlideTitle"
-          onChange={(title) => handleChangeTitle(title)}
-          value={title}
+          onChange={(title) => this.handleChangeTitle(title)}
+          value={slide.title}
         />
         <label htmlFor="currentSlideText">Text</label>
         <textarea
@@ -26,8 +39,8 @@ export default class EditMetaSlid extends Component {
           type="text"
           className="form-control"
           id="currentSlideText"
-          onChange={(txt) => handleChangeTxt(txt)}
-          value={txt}>
+          onChange={(txt) => this.handleChangeTxt(txt)}
+          value={slide.txt}>
         </textarea>
       </div>
     );

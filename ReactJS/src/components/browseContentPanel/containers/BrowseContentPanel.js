@@ -2,14 +2,12 @@ import React, {Component} from "react";
 
 import './browseContentPanel.css';
 
+import {connect} from 'react-redux';
+
 import Content from '../../common/content/containers/Content';
 
 
-export default class BrowseContentPanel extends React.Component {
-
-  constructor(props) {
-    super(props);
-  }
+class BrowseContentPanel extends React.Component {
 
   render() {
 
@@ -18,7 +16,7 @@ export default class BrowseContentPanel extends React.Component {
     return (
       <div>
         {
-          Object.keys(contentMap).map((value, index) => {
+         contentMap &&  Object.keys(contentMap).map((value, index) => {
             return <Content key={index} content={contentMap[value]}/>
           })
         }
@@ -26,3 +24,14 @@ export default class BrowseContentPanel extends React.Component {
     )
   }
 }
+
+function mapStateToProps(state, ownProps) {
+  return {
+    ...ownProps,
+    contentMap: state.UpdateModelReducer.contentMap
+  }
+}
+
+export default connect(
+  mapStateToProps, {}
+)(BrowseContentPanel)

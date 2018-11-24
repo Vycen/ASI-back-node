@@ -3,21 +3,22 @@ const reducer = (state, action) => {
 
   if (!state) {
     state = {
-      selectedPart: undefined
+      selectedSlide: undefined
     };
   }
 
 
   switch (action.type) {
 
-    case 'PART_CLICKED':
+    case 'UPDATE_SELECTED_SLID':
 
       return {
         ...state,
-        selectedPart: action.part
+        selectedSlide: action.selectedSlide
       };
 
     default:
+
       return {
         ...state
       }

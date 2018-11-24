@@ -1,21 +1,21 @@
 import React, {Component} from 'react';
 import '../containers/presentation.css'
+
+import {connect} from 'react-redux';
+
 import Slid from "../../slid/containers/Slid";
 
-export default class SlidList extends Component {
-  constructor(props) {
-    super(props);
-  }
+class SlidList extends Component {
 
   render() {
 
-    const {slidArray, contentMap} = this.props;
+    const {presentation} = this.props;
 
     return(
       <div>
         {
-          slidArray.map((slide, index) => {
-            return <Slid key={index} slide={slide} displayMode={"SHORT"} contentMap={contentMap}/>
+          presentation && presentation.slidArray.map((slide, index) => {
+            return <Slid key={index} slide={slide} displayMode={"SHORT"}/>
           })
         }
       </div>
@@ -23,3 +23,14 @@ export default class SlidList extends Component {
   }
 
 }
+
+function mapStateToProps(state, ownProps) {
+  return {
+    ...ownProps,
+    presentation: state.UpdateModelReducer.presentation
+  }
+}
+
+export default connect(
+  mapStateToProps, {}
+)(SlidList)

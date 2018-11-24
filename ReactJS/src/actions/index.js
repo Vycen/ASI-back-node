@@ -1,11 +1,27 @@
-export const robotClicked = (robot) => {
+export const setSelectedSlid = (selectedSlide) => {
   return {
-    type: 'ROBOT_CLICKED', robot
-  }
+    type: 'UPDATE_SELECTED_SLID',
+    selectedSlide
+  };
 };
 
-export const partClicked = (part) => {
+export const updateContentMap = (contentMap) => {
   return {
-    type: 'PART_CLICKED', part
-  }
+    type: 'UPDATE_CONTENT_MAP',
+    contentMap
+  };
+};
+
+export const updatePresentation = (presentation) => {
+  return {
+    type: 'UPDATE_PRESENTATION',
+    presentation
+  };
+};
+
+export const updateSlid = (updatedSlide) => {
+  return {
+    type: 'UPDATE_PRESENTATION_SLIDS',
+    updatedSlide
+  };
 };
