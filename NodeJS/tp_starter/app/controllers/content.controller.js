@@ -13,7 +13,6 @@ class Contentcontroller {
             let result = {};
             let listFichier = [];
             list.forEach((file) => {
-
                 if(path.extname(file) === '.json') {
                     listFichier.push(file);
                 }
