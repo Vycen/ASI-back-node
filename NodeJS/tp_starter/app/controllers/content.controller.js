@@ -9,7 +9,7 @@ const CONFIG = JSON.parse(process.env.CONFIG);
 class Contentcontroller {
 
     static  list(req,res) {
-        fs.readdir(CONFIG.presentationDirectory, (err, list) => {
+        fs.readdir(CONFIG.contentDirectory, (err, list) => {
             let result = {};
             let listFichier = [];
             list.forEach((file) => {
@@ -18,7 +18,7 @@ class Contentcontroller {
                 }
             });
             listFichier.forEach((file) => {
-                fs.readFile(CONFIG.presentationDirectory + '/' + file, (err, data) => {
+                fs.readFile(CONFIG.contentDirectory + '/' + file, (err, data) => {
                     if(err) {
                         res.json(err);
                     }
@@ -58,7 +58,7 @@ class Contentcontroller {
     }
 
     static  create(req,res) {
-        let contentInstance = new  contentModel(req.body);
+        let contentInstance = new contentModel(req.body);
         contentModel.create(contentInstance,(err, data) => {
             res.json(data);
         });

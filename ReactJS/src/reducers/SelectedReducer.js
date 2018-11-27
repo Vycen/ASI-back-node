@@ -17,6 +17,13 @@ const reducer = (state, action) => {
         selectedSlide: action.selectedSlide
       };
 
+    case 'UPDATE_DRAGGED_ELT':
+
+      return {
+        ...state,
+        draggedElt: action.id
+      };
+
     default:
 
       return {

@@ -2,13 +2,32 @@ import React, {Component} from 'react';
 
 import {connect} from 'react-redux';
 
+import {updatePresentation} from "../../../../actions";
+
 import '../containers/presentation.css'
 
 class EditMetaPres extends Component {
 
+  handleChangeTitle(title) {
+    const {updatePresentation, presentation} = this.props;
+    updatePresentation({
+      ...presentation,
+      title: title.target.value
+    })
+  }
+
+  handleChangeDesc(desc) {
+    const {updatePresentation, presentation} = this.props;
+    updatePresentation({
+      ...presentation,
+      description: desc.target.value
+    })
+  }
+
+
   render() {
 
-    const {presentation, handleChangeTitle, handleChangeTxt} = this.props;
+    const {presentation} = this.props;
 
     return (
       <div>
@@ -20,7 +39,7 @@ class EditMetaPres extends Component {
               type="text"
               className="form-control"
               id="currentSlideTitle"
-              onChange={(title) => handleChangeTitle(title)}
+              onChange={(title) => this.handleChangeTitle(title)}
               value={presentation.title}
             />
             <label htmlFor="currentSlideText">Description</label>
@@ -29,7 +48,7 @@ class EditMetaPres extends Component {
               type="text"
               className="form-control"
               id="currentSlideText"
-              onChange={(txt) => handleChangeTxt(txt)}
+              onChange={(desc) => this.handleChangeDesc(desc)}
               value={presentation.description}>
             </textarea>
           </div>
@@ -48,5 +67,5 @@ function mapStateToProps(state, ownProps) {
 }
 
 export default connect(
-  mapStateToProps, {}
+  mapStateToProps, {updatePresentation}
 )(EditMetaPres)

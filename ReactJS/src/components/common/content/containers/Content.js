@@ -4,23 +4,36 @@ import './content.css'
 
 import LightContent from '../components/LightContent';
 import FullContent from '../components/FullContent';
+import {connect} from "react-redux";
+import {updateDraggedElt} from "../../../../actions";
 
-export default class Content extends Component {
+class Content extends Component {
 
-  constructor(props) {
-    super(props);
+  drag(ev) {
+    const {content, updateDraggedElt} = this.props;
+    updateDraggedElt(content.id);
   }
 
   render() {
 
-    const {content} = this.props;
+    const {content, onlyContent} = this.props;
 
-    //TODO
     return (
-      <div>
-        {!content.onlyContent && <FullContent content={content}/>}
-        {/*{!content.onlyContent && <LightContent content={content}/>}*/}
+      <div draggable={true} onDrag={(ev) => this.drag(ev)}>
+        {onlyContent && <FullContent content={content}/>}
+        {!onlyContent && <LightContent content={content}/>}
       </div>
     )
   }
 }
+
+
+function mapStateToProps(state, ownProps) {
+  return {
+    ...ownProps
+  }
+}
+
+export default connect(
+  mapStateToProps, {updateDraggedElt}
+)(Content)

@@ -10,13 +10,26 @@ import Slid from "../common/slid/containers/Slid";
 import Presentation from "../common/presentation/containers/Presentation";
 import EditSlidePanel from "../editSlidePanel/containers/EditSlidPanel";
 
+import Comm from '../../services/Comm';
+
 class Main extends Component {
 
   componentDidMount() {
     const {updateContentMap, updatePresentation} = this.props;
 
-    updateContentMap(require('../../data/contentMap'));
-    updatePresentation(require('../../data/pres'));
+    const comm = new Comm();
+
+    comm.loadContent((contentMap) => {
+      updateContentMap(contentMap);
+    }, (e) => {
+      console.error(e);
+    });
+
+    comm.loadPres('efa0a79a-2f20-4e97-b0b7-71f824bfe349', (pres) => {
+      updatePresentation(pres);
+    }, (e) => {
+      console.error(e);
+    });
   }
 
   render() {
@@ -28,10 +41,10 @@ class Main extends Component {
           <div className='col-md-3 col-lg-3 height-100 vertical-scroll'>
             <Presentation/>
           </div>
-          <div className='col-md-6 col-lg-6 height-100'>
+          <div className='col-md-6 col-lg-6 height-100 vertical-scroll'>
             <EditSlidePanel/>
           </div>
-          <div className='col-md-3 col-lg-3 height-100'>
+          <div className='col-md-3 col-lg-3 height-100 vertical-scroll'>
             <BrowseContentPanel/>
           </div>
         </div>

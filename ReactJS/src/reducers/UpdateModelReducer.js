@@ -1,4 +1,5 @@
-import {setSelectedSlid} from "../actions";
+import {setSelectedSlid, contentAdded} from "../actions";
+import Comm from "../services/Comm";
 
 const Tools = require('../services/Tools.js');
 
@@ -18,7 +19,9 @@ const reducer = (state, action) => {
     case 'UPDATE_PRESENTATION':
       return {
         ...state,
-        presentation: action.presentation
+        presentation: {
+          ...action.presentation
+        }
       };
 
     case 'UPDATE_PRESENTATION_SLIDS':
@@ -46,11 +49,59 @@ const reducer = (state, action) => {
 
       return {
         ...state,
-        contentMap: action.contentMap
+        contentMap: {
+          ...action.contentMap
+        }
       };
 
     case 'ADD_CONTENT':
-      return; //TO DO
+
+      const comm = new Comm();
+
+      let id = Tools.generateUUID();
+
+      let fileContent = {};
+
+      if(action.content.type === 'img') {
+        fileContent = {
+          fileName: id + action.content.ext.replace("image/", '.'),
+          src: "/contents/" + id,
+          data: action.content.data
+        }
+      }
+
+      let newContent = {
+        id: id,
+        src: action.content.src,
+        type: action.content.type,
+        title: action.content.title,
+        ...fileContent
+      };
+
+      comm.savContent(newContent,
+        (resp) => {
+          action.asyncDispatch(contentAdded(resp.data))
+        },
+        (err) => {
+          console.error(err);
+        });
+
+
+      return {
+        ...state
+      };
+
+    case 'CONTENT_ADDED':
+
+      console.log(action.newContent);
+
+      return {
+        ...state,
+        contentMap: {
+          ...state.contentMap,
+          [action.newContent.id]: action.newContent
+        }
+      };
 
     default:
       return {

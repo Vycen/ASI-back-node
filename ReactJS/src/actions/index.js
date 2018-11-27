@@ -25,3 +25,24 @@ export const updateSlid = (updatedSlide) => {
     updatedSlide
   };
 };
+
+export const updateDraggedElt = (id) => {
+  return {
+    type: 'UPDATE_DRAGGED_ELT',
+    id
+  };
+};
+
+export const addContent = (content) => {
+  return {
+    type: 'ADD_CONTENT',
+    content
+  };
+};
+
+export const contentAdded = (newContent) => {
+  return {
+    type: 'CONTENT_ADDED',
+    newContent
+  };
+};

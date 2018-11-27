@@ -5,9 +5,10 @@ import './browseContentPanel.css';
 import {connect} from 'react-redux';
 
 import Content from '../../common/content/containers/Content';
+import AddContentPanel from '../../addContentPanel/containers/AddContentPanel';
 
 
-class BrowseContentPanel extends React.Component {
+class BrowseContentPanel extends Component {
 
   render() {
 
@@ -17,9 +18,10 @@ class BrowseContentPanel extends React.Component {
       <div>
         {
          contentMap &&  Object.keys(contentMap).map((value, index) => {
-            return <Content key={index} content={contentMap[value]}/>
+            return <Content key={index} content={contentMap[value]} onlyContent={true}/>
           })
         }
+        <AddContentPanel />
       </div>
     )
   }

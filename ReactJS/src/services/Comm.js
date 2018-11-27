@@ -1,11 +1,12 @@
 let io = require('socket.io-client');
 let axios = require('axios');
 
-class Comm {
+export default class Comm {
   constructor() {
     this.comm = {};
     this.comm.io = {};
     this.socket = "";
+    this.instance = axios.create();
     this.emitOnConnect = this.emitOnConnect.bind(this);
 
   }
@@ -15,7 +16,7 @@ class Comm {
   }
 
   loadPres(presId, callback, callbackErr) {
-    axios.get('/loadPres')
+    this.instance.get('/loadPres')
       .then(function (data) {
         let size = Object.keys(data.data).length;
         console.log("raw data");
@@ -23,10 +24,10 @@ class Comm {
         let loadedPres = "";
         if (size > 0) {
           console.log("key");
-          console.log(Object.keys(data.data)[0]);
+          console.log(presId);
           console.log("data");
-          console.log(data.data[Object.keys(data.data)[0]]);
-          loadedPres = data.data[Object.keys(data.data)[0]];
+          console.log(data.data[presId]);
+          loadedPres = data.data[presId];
         }
         callback(loadedPres);
       })
@@ -37,7 +38,7 @@ class Comm {
   }
 
   loadContent(callback, callbackErr) {
-    axios.get('/resources_list')
+    this.instance.get('/contents')
       .then(function (data) {
         //console.log("raw content data");
         //console.log(data.data);
@@ -58,7 +59,7 @@ class Comm {
   }
 
   savPres(presJson, callbackErr) {
-    axios.post('/savePres', presJson)
+    this.instance.post('/savePres', presJson)
       .then(function (response) {
         console.log(response);
       })
@@ -67,10 +68,10 @@ class Comm {
       });
   }
 
-  savContent(contentJson, callbackErr) {
-    axios.post('/addContent', contentJson)
+  savContent(contentJson, callback, callbackErr) {
+    this.instance.post('/contents', contentJson)
       .then(function (response) {
-        console.log(response);
+        callback(response);
       })
       .catch(function (error) {
         callbackErr(error);
@@ -80,7 +81,7 @@ class Comm {
   fileUpload(fileC, callback, callbackErr) {
     let data = new FormData();
     data.append('file', fileC);
-    axios.post('/file-upload', data)
+    this.instance.post('/file-upload', data)
       .then(function (response) {
         console.log(response);
         callback();
@@ -142,5 +143,3 @@ class Comm {
   }
 
 }
-
-module.exports = Comm;
