@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import './editSlidPanel.css';
 import Slid from "../../common/slid/containers/Slid";
+import PresentationNavigation from "./PresentationNavigation";
 
 import {connect} from 'react-redux';
 import {updateSlid} from "../../../actions";
@@ -23,6 +24,7 @@ class EditSlidePanel extends Component {
           selectedSlide &&
           <Slid slide={selectedSlide} displayMode={"FULL_MNG"} updateCurrentSlide={(slide) => this.updateCurrentSlid(slide)}/>
         }
+        <PresentationNavigation />
       </div>
     )
 

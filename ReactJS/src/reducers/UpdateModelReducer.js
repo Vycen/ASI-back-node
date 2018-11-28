@@ -1,5 +1,6 @@
-import {setSelectedSlid, contentAdded} from "../actions";
+import {setSelectedSlid, contentAdded, sendNavCmd} from "../actions";
 import Comm from "../services/Comm";
+const comm = new Comm();
 
 const Tools = require('../services/Tools.js');
 
@@ -17,6 +18,9 @@ const reducer = (state, action) => {
   switch (action.type) {
 
     case 'UPDATE_PRESENTATION':
+
+      action.asyncDispatch(sendNavCmd());
+
       return {
         ...state,
         presentation: {
@@ -28,15 +32,41 @@ const reducer = (state, action) => {
 
       let pres = state.presentation;
 
-      let index = pres.slidArray.findIndex((slide) => {
-        return slide.id === action.updatedSlide.id;
-      });
+      let newSlide = {
+          id: Tools.generateUUID(),
+          title: "",
+          txt: "",
+          contentMap: {
+            "1": ""
+          }
+      };
 
-      if(index > -1) {
-        pres.slidArray[index] = action.updatedSlide;
+      if(action.updatedSlide.add) {
+        pres.slidArray.push(newSlide);
+        action.asyncDispatch(setSelectedSlid(newSlide));
+      }
+      else {
+        console.log(action.updatedSlide)
+
+        let index = pres.slidArray.findIndex((slide) => {
+          return slide.id === action.updatedSlide.id;
+        });
+
+        if(index > -1) {
+          if(action.updatedSlide.remove) {
+            pres.slidArray.splice(index, 1);
+
+            action.asyncDispatch(setSelectedSlid(null));
+          }
+          else {
+            pres.slidArray[index] = action.updatedSlide;
+            action.asyncDispatch(setSelectedSlid(action.updatedSlide));
+          }
+        }
+
       }
 
-      action.asyncDispatch(setSelectedSlid(action.updatedSlide));
+      action.asyncDispatch(sendNavCmd());
 
       return {
         ...state,
@@ -56,7 +86,6 @@ const reducer = (state, action) => {
 
     case 'ADD_CONTENT':
 
-      const comm = new Comm();
 
       let id = Tools.generateUUID();
 
@@ -92,9 +121,7 @@ const reducer = (state, action) => {
       };
 
     case 'CONTENT_ADDED':
-
-      console.log(action.newContent);
-
+      
       return {
         ...state,
         contentMap: {

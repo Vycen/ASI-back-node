@@ -46,3 +46,11 @@ export const contentAdded = (newContent) => {
     newContent
   };
 };
+
+export const sendNavCmd = (action, pres) => {
+  return {
+    type: 'COMMAND_PRESENTATION',
+    action,
+    pres
+  };
+};
