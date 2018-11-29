@@ -59,7 +59,8 @@ class Contentcontroller {
 
     static  create(req,res) {
         let contentInstance = new contentModel(req.body);
-        contentModel.create(contentInstance,(err, data) => {
+        console.log(req.body.data);
+        contentModel.create(contentInstance, req.body.data,(err, data) => {
             res.json(data);
         });
     }

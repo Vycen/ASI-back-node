@@ -22,7 +22,7 @@ class ContentModel {
   }
 
 
-  static create(content, callback) {
+  static create(content, file, callback) {
     if(!(content instanceof ContentModel)) {
       return callback(new Error("Not a ContentModel"));
     }
@@ -39,7 +39,8 @@ class ContentModel {
 
           return callback(null,content);
       }
-      fs.writeFile(CONFIG.contentDirectory + '/' + content.fileName, content.getData(), (err) => {
+      var buf = new Buffer(file, 'base64');
+      fs.writeFile(CONFIG.contentDirectory + '/' + content.fileName, buf, (err) => {
         if (err) {
           return callback(err);
         }
