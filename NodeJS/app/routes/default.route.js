@@ -2,11 +2,13 @@
 
 const express = require("express");
 const router = express.Router();
+const path = require('path');
+const appDir = path.dirname(require.main.filename);
 
 router.route('/')
   .get((request, response) => {
     //response.send("It Works !")
-      response.sendFile("/home/cpe/Documents/tp_nodejs/ASI-back-node/NodeJS/tp_starter/app/routes/testSocket.html");
+      response.sendFile(path.join(appDir, '/public/login/index.html'));
   });
 
 

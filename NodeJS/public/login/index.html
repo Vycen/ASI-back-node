@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+
+        <meta charset="utf-8"/>
+
+        <title>Login</title>
+
+    </head>
+
+    <body style="display: flex; align-items: center; justify-content: center; flex: 1; flex-direction: column">
+
+        <h3 style="text-align: center">Please Log In</h3>
+
+        <form style="display: flex; flex-direction: column; width: 25%">
+            <input type="text" placeholder="Login" id="log"/>
+            <input type="password" placeholder="Password" id="pwd"/>
+            <input type="button" onclick="login()" value="Log In"/>
+        </form>
+
+
+        <script>
+
+            function login() {
+
+                let credentials = {
+                    login: document.getElementById("log").value,
+                    pwd: document.getElementById("pwd").value
+                };
+
+
+                const Http = new XMLHttpRequest();
+
+                const url = 'http://localhost:1337/login';
+
+                Http.open("POST", url);
+
+                Http.setRequestHeader('Content-Type', 'application/json');
+
+                Http.send(JSON.stringify(credentials));
+
+                Http.onreadystatechange = (e) => {
+                  if (Http.readyState === XMLHttpRequest.DONE) {
+
+                    if (Http.status === 200) {
+
+                      console.log(Http.responseText);
+                      let result = JSON.parse(Http.responseText);
+
+                      if(result.validAuth) {
+                        if(result.role === "USER") {
+                          window.location.href = '/watch';
+                        }
+                        else if(result.role === "ADMIN") {
+                          window.location.href = '/admin';
+                        }
+                        else {
+                          window.alert("Invalid Credentials")
+                        }
+                      }
+                      else {
+                        window.alert("Invalid Credentials")
+                      }
+
+                    }
+                    else {
+                      window.alert("Invalid Credentials")
+                    }
+                  }
+                }
+
+            }
+
+        </script>
+
+    </body>
+
+</html>
