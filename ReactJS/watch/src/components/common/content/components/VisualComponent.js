@@ -6,7 +6,15 @@ class VisualComponent extends Component {
     const {data} = this.props;
 
     return (
-      <iframe style={{flex:1, display: 'flex', justifyContent: 'center', alignItems: 'center'}} className='frame' src={data.src} />
+      <iframe className='frame' style={{flex:1, display: 'flex', justifyContent: 'center', alignItems: 'center'}} src={data.src} />
+    )
+  }
+
+  renderVideo() {
+    const {data} = this.props;
+
+    return (
+      <iframe className='frame' style={{flex:1, display: 'flex', justifyContent: 'center', alignItems: 'center'}} src={data.src + '?autoplay=1'} />
     )
   }
 
@@ -14,7 +22,7 @@ class VisualComponent extends Component {
     const {data} = this.props;
 
     return (
-      <img style={{flex:1, display: 'flex', justifyContent: 'center', alignItems: 'center'}}  className='image' src={data.src} />
+      <img className='image' src={data.src} />
     )
   }
 
@@ -22,11 +30,16 @@ class VisualComponent extends Component {
 
     const {data} = this.props;
 
-    if(data && (data.type === 'img' || data.type === 'img_url')) {
-      return this.renderImage();
-    }
-    else if(data && (data.type === 'video' || data.type === 'web')) {
-      return this.renderFrame()
+    if(data) {
+      if(data.type === 'img' || data.type === 'img_url') {
+        return this.renderImage();
+      }
+      else if(data.type === 'video') {
+        return this.renderVideo()
+      }
+      else if (data.type === 'web') {
+        return this.renderFrame()
+      }
     }
 
     return null;
@@ -35,3 +48,4 @@ class VisualComponent extends Component {
 }
 
 export default VisualComponent;
+
