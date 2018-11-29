@@ -9,6 +9,8 @@ https://github.com/Vycen/ASI-project
 
 ## Vidéo
 
+https://youtu.be/Su05DxTu8K4
+
 ## Avancement
 
 ### JEE
